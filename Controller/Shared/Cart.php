@@ -9,7 +9,6 @@ use Magento\Catalog\Model\Product\Exception as ProductException;
 use Magento\Checkout\Helper\Cart as CartHelper;
 use Magento\Checkout\Model\Cart as CustomerCart;
 use Magento\Framework\App\Action\Context as ActionContext;
-use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Escaper;
 use Magento\Framework\Exception\LocalizedException;
@@ -19,11 +18,9 @@ use Magento\Wishlist\Model\ItemFactory;
 use Magento\Wishlist\Model\ResourceModel\Item\Option\Collection as OptionCollection;
 
 /**
- * Wishlist Cart Controller
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Cart extends \Magento\Framework\App\Action\Action implements HttpGetActionInterface
+class Cart extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var CustomerCart
@@ -106,19 +103,19 @@ class Cart extends \Magento\Framework\App\Action\Action implements HttpGetAction
                     'You added %1 to your shopping cart.',
                     $this->escaper->escapeHtml($item->getProduct()->getName())
                 );
-                $this->messageManager->addSuccessMessage($message);
+                $this->messageManager->addSuccess($message);
             }
 
             if ($this->cartHelper->getShouldRedirectToCart()) {
                 $redirectUrl = $this->cartHelper->getCartUrl();
             }
         } catch (ProductException $e) {
-            $this->messageManager->addErrorMessage(__('This product(s) is out of stock.'));
+            $this->messageManager->addError(__('This product(s) is out of stock.'));
         } catch (LocalizedException $e) {
-            $this->messageManager->addNoticeMessage($e->getMessage());
+            $this->messageManager->addNotice($e->getMessage());
             $redirectUrl = $item->getProductUrl();
         } catch (\Exception $e) {
-            $this->messageManager->addExceptionMessage($e, __('We can\'t add the item to the cart right now.'));
+            $this->messageManager->addException($e, __('We can\'t add the item to the cart right now.'));
         }
         /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);

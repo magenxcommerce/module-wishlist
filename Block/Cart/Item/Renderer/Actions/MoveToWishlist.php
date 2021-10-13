@@ -10,8 +10,6 @@ use Magento\Framework\View\Element\Template;
 use Magento\Wishlist\Helper\Data;
 
 /**
- * Class MoveToWishlist
- *
  * @api
  * @since 100.0.2
  */

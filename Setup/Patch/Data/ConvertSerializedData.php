@@ -3,17 +3,20 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 namespace Magento\Wishlist\Setup\Patch\Data;
 
-use Magento\Framework\DB\DataConverter\SerializedToJson;
 use Magento\Framework\DB\FieldDataConverterFactory;
-use Magento\Framework\DB\Query\Generator as QueryGenerator;
+use Magento\Framework\DB\DataConverter\SerializedToJson;
 use Magento\Framework\DB\Select\QueryModifierFactory;
+use Magento\Framework\DB\Query\Generator as QueryGenerator;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Setup\Patch\PatchVersionInterface;
 
 /**
- * Convert serialized wishlist item data.
+ * Class ConvertSerializedData
+ * @package Magento\Wishlist\Setup\Patch
  */
 class ConvertSerializedData implements DataPatchInterface, PatchVersionInterface
 {
@@ -57,7 +60,7 @@ class ConvertSerializedData implements DataPatchInterface, PatchVersionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function apply()
     {
@@ -65,7 +68,7 @@ class ConvertSerializedData implements DataPatchInterface, PatchVersionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getDependencies()
     {
@@ -73,7 +76,7 @@ class ConvertSerializedData implements DataPatchInterface, PatchVersionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getVersion()
     {
@@ -81,19 +84,13 @@ class ConvertSerializedData implements DataPatchInterface, PatchVersionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAliases()
     {
         return [];
     }
-
-    /**
-     * Convert serialized whishlist item data.
-     *
-     * @throws \Magento\Framework\DB\FieldDataConversionException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
+    
     private function convertSerializedData()
     {
         $connection = $this->moduleDataSetup->getConnection();

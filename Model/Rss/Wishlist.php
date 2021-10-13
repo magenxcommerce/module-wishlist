@@ -7,11 +7,9 @@
 namespace Magento\Wishlist\Model\Rss;
 
 use Magento\Framework\App\Rss\DataProviderInterface;
-use Magento\Store\Model\ScopeInterface;
 
 /**
  * Wishlist RSS model
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Wishlist implements DataProviderInterface
@@ -72,8 +70,6 @@ class Wishlist implements DataProviderInterface
     protected $customerFactory;
 
     /**
-     * Wishlist constructor.
-     *
      * @param \Magento\Wishlist\Helper\Rss $wishlistHelper
      * @param \Magento\Wishlist\Block\Customer\Wishlist $wishlistBlock
      * @param \Magento\Catalog\Helper\Output $outputHelper
@@ -118,15 +114,16 @@ class Wishlist implements DataProviderInterface
      */
     public function isAllowed()
     {
-        return $this->scopeConfig->isSetFlag('rss/wishlist/active', ScopeInterface::SCOPE_STORE)
-            && $this->getWishlist()->getCustomerId() === $this->wishlistHelper->getCustomer()->getId();
+        return (bool)$this->scopeConfig->getValue(
+            'rss/wishlist/active',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
      * Get RSS feed items
      *
      * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getRssData()
     {
@@ -183,8 +180,8 @@ class Wishlist implements DataProviderInterface
             }
         } else {
             $data = [
-                'title' => __('We cannot retrieve the Wish List.')->render(),
-                'description' => __('We cannot retrieve the Wish List.')->render(),
+                'title' => __('We cannot retrieve the Wish List.'),
+                'description' => __('We cannot retrieve the Wish List.'),
                 'link' => $this->urlBuilder->getUrl(),
                 'charset' => 'UTF-8',
             ];
@@ -194,18 +191,14 @@ class Wishlist implements DataProviderInterface
     }
 
     /**
-     * GetCacheKey
-     *
      * @return string
      */
     public function getCacheKey()
     {
-        return 'rss_wishlist_data_' . $this->getWishlist()->getId();
+        return 'rss_wishlist_data';
     }
 
     /**
-     * Get Cache Lifetime
-     *
      * @return int
      */
     public function getCacheLifetime()
@@ -222,7 +215,7 @@ class Wishlist implements DataProviderInterface
     {
         $customerId = $this->getWishlist()->getCustomerId();
         $customer = $this->customerFactory->create()->load($customerId);
-        $title = __('%1\'s Wishlist', $customer->getName())->render();
+        $title = __('%1\'s Wishlist', $customer->getName());
         $newUrl = $this->urlBuilder->getUrl(
             'wishlist/shared/index',
             ['code' => $this->getWishlist()->getSharingCode()]
@@ -271,7 +264,7 @@ class Wishlist implements DataProviderInterface
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
     public function getFeeds()
     {
@@ -279,7 +272,7 @@ class Wishlist implements DataProviderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isAuthRequired()
     {

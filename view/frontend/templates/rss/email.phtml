@@ -4,20 +4,14 @@
  * See COPYING.txt for license details.
  */
 
-/* @var \Magento\Wishlist\Block\Rss\EmailLink $block */
-/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+// @codingStandardsIgnoreFile
 
-/** @var \Magento\Wishlist\Helper\Data $wishlistHelper */
-$wishlistHelper = $block->getData('wishlistHelper');
+/* @var \Magento\Wishlist\Block\Rss\EmailLink $block */
 ?>
 <?php if ($block->getLink()): ?>
-<p id="wishlist-rss-email-link">
-    <?= $block->escapeHtml(__("RSS link to %1's wishlist", $wishlistHelper->getCustomerName())) ?>
+<p style="font-size:12px; line-height:16px; margin:0 0 16px;">
+    <?= $block->escapeHtml(__("RSS link to %1's wishlist", $this->helper('Magento\Wishlist\Helper\Data')->getCustomerName())) ?>
     <br />
     <a href="<?= $block->escapeUrl($block->getLink()) ?>"><?= $block->escapeUrl($block->getLink()) ?></a>
 </p>
-    <?= /* @noEscape */ $secureRenderer->renderStyleAsTag(
-        "font-size:12px; line-height:16px; margin:0 0 16px;",
-        'p#wishlist-rss-email-link'
-    ) ?>
 <?php endif; ?>

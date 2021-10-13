@@ -8,6 +8,7 @@ namespace Magento\Wishlist\Controller\Index;
 
 use Magento\Checkout\Helper\Cart as CartHelper;
 use Magento\Checkout\Model\Cart as CheckoutCart;
+use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action;
 use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Escaper;
@@ -18,11 +19,9 @@ use Magento\Wishlist\Controller\WishlistProviderInterface;
 use Magento\Wishlist\Helper\Data as WishlistHelper;
 
 /**
- * Add cart item to wishlist and remove from cart controller.
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Fromcart extends \Magento\Wishlist\Controller\AbstractIndex implements Action\HttpPostActionInterface
+class Fromcart extends \Magento\Wishlist\Controller\AbstractIndex
 {
     /**
      * @var WishlistProviderInterface
