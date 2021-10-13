@@ -34,7 +34,8 @@
             <deleteData createDataKey="customer" stepKey="deleteCustomer"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="adminLogout"/>
         </after>
-        <actionGroup ref="AdminOpenProductIndexPageActionGroup" stepKey="navigateToProductIndex"/>
+        <amOnPage url="{{AdminProductIndexPage.url}}" stepKey="navigateToProductIndex"/>
+        <waitForPageLoad stepKey="waitForProductIndexPageLoad"/>
         <actionGroup ref="ResetProductGridToDefaultViewActionGroup" stepKey="resetFiltersIfPresent"/>
         <actionGroup ref="SearchProductGridByKeywordActionGroup" stepKey="searchProductGrid">
             <argument name="keyword" value="_defaultProduct.name"/>
@@ -45,7 +46,8 @@
             <argument name="image" value="MagentoLogo"/>
         </actionGroup>
         <actionGroup ref="SaveProductFormActionGroup" stepKey="saveProduct"/>
-        <actionGroup ref="AdminOpenProductIndexPageActionGroup" stepKey="navigateToProductIndex1"/>
+        <amOnPage url="{{AdminProductIndexPage.url}}" stepKey="navigateToProductIndex1"/>
+        <waitForPageLoad stepKey="waitForProductIndexPageLoad1"/>
         <click selector="{{AdminProductGridSection.selectRowBasedOnName(colorProductAttribute1.name)}}" stepKey="selectProductToAddImage1"/>
         <waitForPageLoad stepKey="waitForProductEditPageLoad1"/>
         <actionGroup ref="AddProductImageActionGroup" stepKey="addImageForChildProduct">
@@ -54,11 +56,11 @@
         <actionGroup ref="SaveProductFormActionGroup" stepKey="saveSimpleProduct"/>
 
          <!--Sign in as customer -->
-        <actionGroup ref="StorefrontOpenCustomerLoginPageActionGroup" stepKey="goToSignInPage"/>
-        <actionGroup ref="StorefrontFillCustomerLoginFormActionGroup" stepKey="fillLoginFormWithCorrectCredentials">
-            <argument name="customer" value="$$customer$$"/>
-        </actionGroup>
-        <actionGroup ref="StorefrontClickSignOnCustomerLoginFormActionGroup" stepKey="clickSignInAccountButton" />
+        <amOnPage url="{{StorefrontCustomerSignInPage.url}}" stepKey="amOnSignInPage"/>
+        <fillField userInput="$$customer.email$$" selector="{{StorefrontCustomerSignInFormSection.emailField}}" stepKey="fillEmail"/>
+        <fillField userInput="$$customer.password$$" selector="{{StorefrontCustomerSignInFormSection.passwordField}}" stepKey="fillPassword"/>
+        <waitForElementVisible selector="{{StorefrontCustomerSignInFormSection.signInAccountButton}}" stepKey="waitForButton"/>
+        <click selector="{{StorefrontCustomerSignInFormSection.signInAccountButton}}" stepKey="clickSignInAccountButton"/>
         <see userInput="$$customer.firstname$$" selector="{{StorefrontCustomerDashboardAccountInformationSection.ContactInformation}}" stepKey="seeFirstName"/>
         <see userInput="$$customer.lastname$$" selector="{{StorefrontCustomerDashboardAccountInformationSection.ContactInformation}}" stepKey="seeLastName"/>
         <see userInput="$$customer.email$$" selector="{{StorefrontCustomerDashboardAccountInformationSection.ContactInformation}}" stepKey="seeEmail"/>
